@@ -1,3 +1,7 @@
+:root {
+    --spacing: 100vh;
+}
+
 canvas {
     position: fixed;
     top: 0;
@@ -6,13 +10,42 @@ canvas {
 
 main {
     position: absolute;
+    /* width: 100vw; */
+    z-index: 99;
     width: 100%;
     font-family: "Rubik", sans-serif;
     font-optical-sizing: auto;
     font-weight: 50;
     font-style: normal;
+
+    margin: 0px auto;
+    padding: 120px 0px;
+
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+}
+
+header {
+    grid-column: 2 / span 8;
+    margin-bottom: var(--spacing);
+}
+
+.card {
+    background: grey;
+    margin-bottom: var(--spacing);
+    padding: 1rem;
+}
+
+.left {
+    grid-column: 2 / span 7;
+}
+
+.right {
+    grid-column: 5 / span 7;
 }
 
 body {
     /* color: white; */
+    margin: 0px;
+    padding: 0px;
 }
