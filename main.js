@@ -96,22 +96,22 @@ function addStar() {
 
 Array(400).fill().forEach(addStar);
 
-const cylinder = new THREE.CylinderGeometry(0.5, 0.5, 6);
+const cylinder = new THREE.CylinderGeometry(0.25, 0.25, 3);
 const cylinderMaterial = new THREE.MeshStandardMaterial({ color: 0x000000 });
 const cylinder1 = new THREE.Mesh(cylinder, cylinderMaterial);
 const cylinder2 = new THREE.Mesh(cylinder, cylinderMaterial);
 
 cylinder1.rotation.z = Math.PI / 5;
-cylinder1.position.set(-1.8, -15, 10);
+cylinder1.position.set(-0.9, -15, 10);
 cylinder2.rotation.z = -Math.PI / 5;
-cylinder2.position.set(1.8, -15, 10);
+cylinder2.position.set(0.9, -15, 10);
 
 scene.add(cylinder1, cylinder2);
 
 function moveCamera() {
   const top = document.body.getBoundingClientRect().top;
 
-  camera.position.y = top * 0.0005 * window.innerHeight - 6;
+  camera.position.y = top * 0.0005 * window.innerHeight - 10;
 }
 
 document.body.onscroll = moveCamera;
@@ -123,8 +123,8 @@ function animate() {
 
   robotMesh.rotation.z += 0.01;
 
-  cylinder1.position.y = Math.abs(Math.sin(Date.now() / 400)) * 1.5 - 18;
-  cylinder2.position.y = Math.abs(Math.sin(Date.now() / 400)) * 1.5 - 18;
+  cylinder1.position.y = Math.sin(Date.now() / 400) * 0.75 - 21;
+  cylinder2.position.y = Math.sin(Date.now() / 400) * 0.75 - 21;
 
   renderer.render(scene, camera);
 }
