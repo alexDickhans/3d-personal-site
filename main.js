@@ -35,25 +35,23 @@ function resize() {
 
 var robotMesh;
 
-const loader = new STLLoader();
-loader.load(
-  "robot.stl",
-  function (geometry) {
-    robotMesh = new THREE.Mesh(geometry, material);
-    robotMesh.scale.setScalar(0.05);
+const mtlLoader = new MTLLoader();
+
+mtlLoader.load("high-stakes.mtl", function (materials) {
+  // materials.preload();
+  var objLoader = new OBJLoader();
+  objLoader.setMaterials(materials);
+  objLoader.load("high-stakes.obj", function (object) {
+    robotMesh = object;
+    robotMesh.scale.setScalar(0.5);
     robotMesh.rotateX(-Math.PI / 2);
     robotMesh.position.set(15, -25, -10);
     robotMesh.castShadow = true;
     robotMesh.receiveShadow = true;
     scene.add(robotMesh);
-  },
-  (xhr) => {
-    console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
-  },
-  (error) => {
-    console.log(error);
-  },
-);
+    scene.add(over_under);
+  });
+});
 
 camera.position.setZ(30);
 camera.position.y = -10;
@@ -77,8 +75,8 @@ pointLight1.position.set(10, 5, 10);
 pointLight2.position.set(-10, 5, 10);
 pointLight3.position.set(-10, 5, -10);
 pointLight4.position.set(-30, -35, -30);
-pointLight5.position.set(-20, -160, 0);
-pointLight6.position.set(20, -160, -35);
+pointLight5.position.set(-20, -160, 15);
+pointLight6.position.set(20, -160, -20);
 pointLight7.position.set(20, -160, 20);
 scene.add(
   pointLight1,
@@ -160,8 +158,6 @@ scene.add(gridHelper);
 const curveObject = new THREE.Line(lineGeometry, lineMaterial);
 scene.add(curveObject);
 
-const mtlLoader = new MTLLoader();
-
 var over_under = undefined;
 mtlLoader.load("over-under.mtl", function (materials) {
   // materials.preload();
@@ -182,8 +178,9 @@ document.body.onresize = resize;
 
 function animate() {
   requestAnimationFrame(animate);
-
-  robotMesh.rotation.z += 0.01;
+  if (robotMesh != undefined) {
+    robotMesh.rotation.z += 0.01;
+  }
 
   cylinder1.position.y = Math.cos(Date.now() / 400) * 0.75 - 21;
   cylinder2.position.y = Math.cos(Date.now() / 400) * 0.75 - 21;
