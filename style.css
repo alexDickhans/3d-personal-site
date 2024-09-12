@@ -1,0 +1,18 @@
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+main {
+    position: absolute;
+    width: 100%;
+    font-family: "Rubik", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 50;
+    font-style: normal;
+}
+
+body {
+    /* color: white; */
+}
