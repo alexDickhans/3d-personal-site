@@ -19,13 +19,13 @@ const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector("#bg"),
 });
 
-renderer.setPixelRatio(window.devicePixelRatio / 4);
+renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 function resize() {
   camera.aspect = window.innerWidth / window.innerHeight;
 
-  renderer.setPixelRatio(window.devicePixelRatio / 10);
+  renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight, true);
 
   console.log("resize");
@@ -61,7 +61,7 @@ const material = new THREE.MeshStandardMaterial({
   roughness: 0.5,
 });
 
-const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+// const ambientLight = new THREE.AmbientLight(0xffffff, 1);
 const pointLight1 = new THREE.PointLight(0xffffff, 300);
 const pointLight2 = new THREE.PointLight(0xffffff, 300);
 const pointLight3 = new THREE.PointLight(0xffffff, 300);
@@ -69,8 +69,8 @@ const pointLight4 = new THREE.PointLight(0xffffff, 300);
 pointLight1.position.set(10, 5, 10);
 pointLight2.position.set(-10, 5, 10);
 pointLight3.position.set(-10, 5, -10);
-pointLight3.position.set(-20, -35, 0);
-scene.add(pointLight1, pointLight2, pointLight3, ambientLight);
+pointLight4.position.set(-30, -35, -30);
+scene.add(pointLight1, pointLight2, pointLight3, pointLight4);
 
 const lightHelper = new THREE.PointLightHelper(pointLight3);
 
