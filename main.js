@@ -5,6 +5,8 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { STLLoader } from "three/examples/jsm/loaders/STLLoader";
 import { mx_bilerp_1 } from "three/src/nodes/materialx/lib/mx_noise.js";
 import { PI, RGBA_ASTC_5x4_Format, Vector3 } from "three/webgpu";
+import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader.js";
+import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 
 const scene = new THREE.Scene();
 
@@ -41,6 +43,8 @@ loader.load(
     robotMesh.scale.setScalar(0.05);
     robotMesh.rotateX(-Math.PI / 2);
     robotMesh.position.set(15, -25, -10);
+    robotMesh.castShadow = true;
+    robotMesh.receiveShadow = true;
     scene.add(robotMesh);
   },
   (xhr) => {
@@ -66,11 +70,22 @@ const pointLight1 = new THREE.PointLight(0xffffff, 300);
 const pointLight2 = new THREE.PointLight(0xffffff, 300);
 const pointLight3 = new THREE.PointLight(0xffffff, 300);
 const pointLight4 = new THREE.PointLight(0xffffff, 300);
+const pointLight5 = new THREE.PointLight(0xffffff, 500);
+const pointLight6 = new THREE.PointLight(0xffffff, 500);
 pointLight1.position.set(10, 5, 10);
 pointLight2.position.set(-10, 5, 10);
 pointLight3.position.set(-10, 5, -10);
 pointLight4.position.set(-30, -35, -30);
-scene.add(pointLight1, pointLight2, pointLight3, pointLight4);
+pointLight5.position.set(-30, -150, -30);
+pointLight5.position.set(-30, -150, 30);
+scene.add(
+  pointLight1,
+  pointLight2,
+  pointLight3,
+  pointLight4,
+  pointLight5,
+  pointLight6,
+);
 
 const lightHelper = new THREE.PointLightHelper(pointLight3);
 
@@ -111,8 +126,48 @@ scene.add(cylinder1, cylinder2);
 function moveCamera() {
   const top = document.body.getBoundingClientRect().top;
 
-  camera.position.y = top * 0.0005 * window.innerHeight - 10;
+  camera.position.y = top * 0.00036 * window.innerHeight - 10;
+  camera.rotation.x = top * 0.0000018 * window.innerHeight;
 }
+
+// Robot path following
+
+const curve = new THREE.CubicBezierCurve3(
+  new THREE.Vector3(-20, -180, 0),
+  new THREE.Vector3(0, -180, 0),
+  new THREE.Vector3(0, -180, -35),
+  new THREE.Vector3(20, -180, -35),
+);
+
+const points = curve.getPoints(50);
+const lineGeometry = new THREE.BufferGeometry().setFromPoints(points);
+
+const lineMaterial = new THREE.LineBasicMaterial({
+  color: 0xff0000,
+  linewidth: 10,
+});
+
+// Create the final object to add to the scene
+const curveObject = new THREE.Line(lineGeometry, lineMaterial);
+scene.add(curveObject);
+
+const mtlLoader = new MTLLoader();
+
+var over_under = undefined;
+over_under.position.set(0, -180, -10);
+scene.add(over_under);
+mtlLoader.load("over-under.mtl", function (materials) {
+  // materials.preload();
+  var objLoader = new OBJLoader();
+  objLoader.setMaterials(materials);
+  objLoader.load("over-under.obj", function (object) {
+    over_under = object;
+    over_under.scale.setScalar(0.4);
+    over_under.position.set(0, -180, -10);
+    over_under.rotateX(-Math.PI / 2);
+    scene.add(over_under);
+  });
+});
 
 document.body.onscroll = moveCamera;
 
@@ -123,8 +178,18 @@ function animate() {
 
   robotMesh.rotation.z += 0.01;
 
-  cylinder1.position.y = Math.sin(Date.now() / 400) * 0.75 - 21;
-  cylinder2.position.y = Math.sin(Date.now() / 400) * 0.75 - 21;
+  cylinder1.position.y = Math.cos(Date.now() / 400) * 0.75 - 21;
+  cylinder2.position.y = Math.cos(Date.now() / 400) * 0.75 - 21;
+
+  const t = 1 - (Math.cos(((Date.now() / 2000.0) % 1.0) * Math.PI) + 1) / 2;
+
+  const position = curve.getPoint(t);
+  const tangent = curve.getTangent(t);
+
+  if (over_under != undefined) {
+    over_under.position.set(position.x, position.y, position.z + 1);
+    over_under.rotation.z = Math.atan2(tangent.x, tangent.z);
+  }
 
   renderer.render(scene, camera);
 }

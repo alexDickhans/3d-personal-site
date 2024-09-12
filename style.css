@@ -19,7 +19,7 @@ main {
     font-style: normal;
 
     margin: 0px auto;
-    padding: 120px 0px;
+    padding: 120px 0px 0px 0px;
 
     display: grid;
     grid-template-columns: repeat(12, 1fr);
@@ -44,8 +44,24 @@ header {
     grid-column: 5 / span 7;
 }
 
+.note {
+    font-style: italic;
+}
+
+footer {
+    grid-column: 1/12;
+    height: 8vh;
+    width: 100vw;
+    background: white;
+    padding: 15px;
+    margin-bottom: 0px;
+}
+
 body {
     /* color: white; */
     margin: 0px;
     padding: 0px;
+}
+
+footer {
 }
