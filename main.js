@@ -72,12 +72,14 @@ const pointLight3 = new THREE.PointLight(0xffffff, 300);
 const pointLight4 = new THREE.PointLight(0xffffff, 300);
 const pointLight5 = new THREE.PointLight(0xffffff, 500);
 const pointLight6 = new THREE.PointLight(0xffffff, 500);
+const pointLight7 = new THREE.PointLight(0xffffff, 500);
 pointLight1.position.set(10, 5, 10);
 pointLight2.position.set(-10, 5, 10);
 pointLight3.position.set(-10, 5, -10);
 pointLight4.position.set(-30, -35, -30);
-pointLight5.position.set(-30, -150, -30);
-pointLight5.position.set(-30, -150, 30);
+pointLight5.position.set(-20, -160, 0);
+pointLight6.position.set(20, -160, -35);
+pointLight7.position.set(20, -160, 20);
 scene.add(
   pointLight1,
   pointLight2,
@@ -127,7 +129,10 @@ function moveCamera() {
   const top = document.body.getBoundingClientRect().top;
 
   camera.position.y = top * 0.00036 * window.innerHeight - 10;
-  camera.rotation.x = top * 0.0000018 * window.innerHeight;
+  camera.rotation.x = Math.max(
+    top * 0.0000018 * window.innerHeight,
+    -Math.PI / 4,
+  );
 }
 
 // Robot path following
@@ -148,14 +153,16 @@ const lineMaterial = new THREE.LineBasicMaterial({
 });
 
 // Create the final object to add to the scene
+const gridHelper = new THREE.GridHelper(10, 10);
+gridHelper.position.setY(-182);
+gridHelper.scale.setScalar(10);
+scene.add(gridHelper);
 const curveObject = new THREE.Line(lineGeometry, lineMaterial);
 scene.add(curveObject);
 
 const mtlLoader = new MTLLoader();
 
 var over_under = undefined;
-over_under.position.set(0, -180, -10);
-scene.add(over_under);
 mtlLoader.load("over-under.mtl", function (materials) {
   // materials.preload();
   var objLoader = new OBJLoader();
