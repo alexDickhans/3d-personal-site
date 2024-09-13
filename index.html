@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <link rel="icon" type="image/svg+xml" href="/vite.svg" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Vite App</title>
+        <title>Alex Dickhans</title>
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,23 +14,28 @@
         />
     </head>
     <body>
-        <canvas id="bg"></canvas>
+        <canvas id="bg" aria-label="Background animation"></canvas>
 
-        <main>
+        <main id="content" style="visibility: hidden">
             <header>
                 <h1>Alex Dickhans</h1>
-                <h1>This is a website about me!</h1>
+                <p>
+                    I am a High School Senior passionate about pushing the
+                    boundaries of Engineering, Robotics, and Computer Science
+                </p>
             </header>
 
             <section class="card left">
                 <h2>I make robots move</h2>
                 <p>
-                    Both in research and the
-                    <a href="https://github ">VEX Robotics Compeition</a> I have
-                    focues on how to best make robots move.
+                    Both in research at CU Boulder's HIRO group and the
+                    <a href="https://github ">VEX Robotics Competition</a>, I
+                    focus on making robots interact with their environment in
+                    more effective ways
                 </p>
                 <p class="note">
-                    Left: Over Under robot moving on a Quadratic spline profile.
+                    Left: Over Under robot following on a Quadratic spline
+                    profile.
                 </p>
             </section>
 
@@ -42,6 +47,10 @@
                 <span>&copy; Alex Dickhans 2024</span>
             </footer>
         </main>
+
+        <div class="loading">
+            <div class="bar"><div class="bar-inside" style=""></div></div>
+        </div>
 
         <script type="module" src="/main.js"></script>
     </body>

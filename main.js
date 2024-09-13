@@ -8,6 +8,54 @@ import { PI, RGBA_ASTC_5x4_Format, Vector3 } from "three/webgpu";
 import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader.js";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 
+function move_bar(pct) {
+  document.getElementsByClassName("bar-inside")[0].style.width = pct + "%";
+}
+
+THREE.DefaultLoadingManager.onStart = function (url, itemsLoaded, itemsTotal) {
+  console.log(
+    "Started loading file: " +
+      url +
+      ".\nLoaded " +
+      itemsLoaded +
+      " of " +
+      itemsTotal +
+      " files.",
+  );
+
+  move_bar((itemsLoaded * 100) / itemsTotal);
+};
+
+THREE.DefaultLoadingManager.onLoad = function () {
+  console.log("Loading Complete!");
+  document.querySelector(".loading").className = "hidden";
+  document.getElementById("content").style.visibility = "visible";
+};
+
+THREE.DefaultLoadingManager.onProgress = function (
+  url,
+  itemsLoaded,
+  itemsTotal,
+) {
+  console.log(
+    "Loading file: " +
+      url +
+      ".\nLoaded " +
+      itemsLoaded +
+      " of " +
+      itemsTotal +
+      " files.",
+  );
+
+  move_bar((itemsLoaded * 100) / itemsTotal);
+};
+
+THREE.DefaultLoadingManager.onError = function (url) {
+  console.log("There was an error loading " + url);
+};
+
+const OU_OFFSET = -220;
+
 const scene = new THREE.Scene();
 
 const camera = new THREE.PerspectiveCamera(
@@ -64,20 +112,22 @@ const material = new THREE.MeshStandardMaterial({
 });
 
 // const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-const pointLight1 = new THREE.PointLight(0xffffff, 300);
+const pointLight1 = new THREE.PointLight(0xffffff, 500);
 const pointLight2 = new THREE.PointLight(0xffffff, 300);
 const pointLight3 = new THREE.PointLight(0xffffff, 300);
 const pointLight4 = new THREE.PointLight(0xffffff, 300);
 const pointLight5 = new THREE.PointLight(0xffffff, 500);
 const pointLight6 = new THREE.PointLight(0xffffff, 500);
 const pointLight7 = new THREE.PointLight(0xffffff, 500);
-pointLight1.position.set(10, 5, 10);
-pointLight2.position.set(-10, 5, 10);
-pointLight3.position.set(-10, 5, -10);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+
+pointLight1.position.set(10, -10, 10);
+pointLight2.position.set(-10, -15, 10);
+pointLight3.position.set(-25, 0, -15);
 pointLight4.position.set(-30, -35, -30);
-pointLight5.position.set(-20, -160, 15);
-pointLight6.position.set(20, -160, -20);
-pointLight7.position.set(20, -160, 20);
+pointLight5.position.set(-20, OU_OFFSET + 20, 15);
+pointLight6.position.set(20, OU_OFFSET + 20, -20);
+pointLight7.position.set(20, OU_OFFSET + 20, 20);
 scene.add(
   pointLight1,
   pointLight2,
@@ -85,14 +135,9 @@ scene.add(
   pointLight4,
   pointLight5,
   pointLight6,
+  pointLight7,
+  directionalLight,
 );
-
-const lightHelper = new THREE.PointLightHelper(pointLight3);
-
-scene.add(lightHelper);
-
-// const gridHelper = new THREE.GridHelper(200, 50);
-// scene.add(lightHelper, gridHelper);
 
 renderer.setClearColor(0xffffff, 1);
 
@@ -136,10 +181,10 @@ function moveCamera() {
 // Robot path following
 
 const curve = new THREE.CubicBezierCurve3(
-  new THREE.Vector3(-20, -180, 0),
-  new THREE.Vector3(0, -180, 0),
-  new THREE.Vector3(0, -180, -35),
-  new THREE.Vector3(20, -180, -35),
+  new THREE.Vector3(-20, OU_OFFSET, 0),
+  new THREE.Vector3(0, OU_OFFSET, 0),
+  new THREE.Vector3(0, OU_OFFSET, -35),
+  new THREE.Vector3(20, OU_OFFSET, -35),
 );
 
 const points = curve.getPoints(50);
@@ -152,7 +197,7 @@ const lineMaterial = new THREE.LineBasicMaterial({
 
 // Create the final object to add to the scene
 const gridHelper = new THREE.GridHelper(10, 10);
-gridHelper.position.setY(-182);
+gridHelper.position.setY(OU_OFFSET - 2);
 gridHelper.scale.setScalar(10);
 scene.add(gridHelper);
 const curveObject = new THREE.Line(lineGeometry, lineMaterial);
@@ -166,7 +211,7 @@ mtlLoader.load("over-under.mtl", function (materials) {
   objLoader.load("over-under.obj", function (object) {
     over_under = object;
     over_under.scale.setScalar(0.4);
-    over_under.position.set(0, -180, -10);
+    over_under.position.set(0, OU_OFFSET, -10);
     over_under.rotateX(-Math.PI / 2);
     scene.add(over_under);
   });
@@ -185,7 +230,7 @@ function animate() {
   cylinder1.position.y = Math.cos(Date.now() / 400) * 0.75 - 21;
   cylinder2.position.y = Math.cos(Date.now() / 400) * 0.75 - 21;
 
-  const t = 1 - (Math.cos(((Date.now() / 2000.0) % 1.0) * Math.PI) + 1) / 2;
+  const t = 1 - (Math.cos(((Date.now() / 3000.0) % 2.0) * Math.PI) + 1) / 2;
 
   const position = curve.getPoint(t);
   const tangent = curve.getTangent(t);

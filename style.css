@@ -1,5 +1,36 @@
 :root {
     --spacing: 100vh;
+    overflow-x: hidden;
+}
+
+.bar {
+    width: 70%;
+    background-color: lightgrey;
+}
+
+.bar-inside {
+    width: 1%;
+    height: 30px;
+    background-color: black;
+}
+
+.loading {
+    opacity: 1;
+    background-color: #fff;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    z-index: 1000;
+}
+
+.hidden {
+    width: 0%;
+    height: 0%;
 }
 
 canvas {
@@ -26,12 +57,21 @@ main {
 }
 
 header {
-    grid-column: 2 / span 8;
+    grid-column: 2 / span 5;
     margin-bottom: var(--spacing);
 }
 
+header h1 {
+    font-size: 4em;
+}
+
+header p {
+    font-size: 1.5em;
+}
+
 .card {
-    background: grey;
+    background: white;
+    border: solid 8px black;
     margin-bottom: var(--spacing);
     padding: 1rem;
 }
