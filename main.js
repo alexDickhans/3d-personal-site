@@ -69,17 +69,17 @@ const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector("#bg"),
 });
 
-renderer.setPixelRatio(window.devicePixelRatio);
-renderer.setSize(window.innerWidth, window.innerHeight);
-
 function resize() {
   camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
 
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight, true);
 
   console.log("resize");
 }
+
+resize();
 
 var robotMesh;
 
@@ -177,6 +177,8 @@ function moveCamera() {
     -Math.PI / 4,
   );
 }
+
+moveCamera();
 
 // Robot path following
 

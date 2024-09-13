@@ -61,6 +61,16 @@ header {
     margin-bottom: var(--spacing);
 }
 
+a {
+    color: black;
+    transition: 200ms;
+}
+
+a:hover {
+    color: darkgray;
+    transition: 200ms;
+}
+
 header h1 {
     font-size: 4em;
 }
