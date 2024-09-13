@@ -54,7 +54,7 @@ THREE.DefaultLoadingManager.onError = function (url) {
   console.log("There was an error loading " + url);
 };
 
-const OU_OFFSET = -220;
+const OU_OFFSET = -240;
 
 const scene = new THREE.Scene();
 
@@ -128,6 +128,7 @@ pointLight4.position.set(-30, -35, -30);
 pointLight5.position.set(-20, OU_OFFSET + 20, 15);
 pointLight6.position.set(20, OU_OFFSET + 20, -20);
 pointLight7.position.set(20, OU_OFFSET + 20, 20);
+const light = new THREE.HemisphereLight(0xffffbb, 0x080820, 1);
 scene.add(
   pointLight1,
   pointLight2,
@@ -137,6 +138,7 @@ scene.add(
   pointLight6,
   pointLight7,
   directionalLight,
+  light,
 );
 
 renderer.setClearColor(0xffffff, 1);
@@ -168,25 +170,13 @@ cylinder2.position.set(0.9, -15, 10);
 
 scene.add(cylinder1, cylinder2);
 
-function moveCamera() {
-  const top = document.body.getBoundingClientRect().top;
-
-  camera.position.y = top * 0.00036 * window.innerHeight - 10;
-  camera.rotation.x = Math.max(
-    top * 0.0000018 * window.innerHeight,
-    -Math.PI / 4,
-  );
-}
-
-moveCamera();
-
 // Robot path following
 
 const curve = new THREE.CubicBezierCurve3(
+  new THREE.Vector3(-40, OU_OFFSET, 0),
   new THREE.Vector3(-20, OU_OFFSET, 0),
-  new THREE.Vector3(0, OU_OFFSET, 0),
+  new THREE.Vector3(-20, OU_OFFSET, -35),
   new THREE.Vector3(0, OU_OFFSET, -35),
-  new THREE.Vector3(20, OU_OFFSET, -35),
 );
 
 const points = curve.getPoints(50);
@@ -219,9 +209,51 @@ mtlLoader.load("over-under.mtl", function (materials) {
   });
 });
 
+var planeGeometry = new THREE.PlaneGeometry(32, 18, 1, 1);
+var texture = new THREE.TextureLoader().load("al-planner.png");
+var planeMaterial = new THREE.MeshBasicMaterial({
+  map: texture,
+});
+var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+
+plane.position.set(30, -80, -20);
+plane.rotateY(-0.5);
+
+scene.add(plane);
+
+var telemetry_radio = undefined;
+mtlLoader.load("pico-debugger.mtl", function (materials) {
+  // materials.preload();
+  var objLoader = new OBJLoader();
+  objLoader.setMaterials(materials);
+  objLoader.load("pico-debugger.obj", function (object) {
+    telemetry_radio = object;
+    telemetry_radio.scale.setScalar(5);
+    telemetry_radio.position.set(-50, OU_OFFSET + 50, -40);
+    telemetry_radio.rotation.z = Math.PI / 2;
+    scene.add(telemetry_radio);
+  });
+});
+
 document.body.onscroll = moveCamera;
 
 document.body.onresize = resize;
+
+function moveCamera() {
+  const top = document.body.getBoundingClientRect().top;
+
+  camera.position.y = top * 0.00036 * window.innerHeight - 10;
+  camera.rotation.x = Math.max(
+    top * 0.0000018 * window.innerHeight,
+    -Math.PI / 4,
+  );
+
+  if (telemetry_radio != undefined) {
+    telemetry_radio.rotation.y = top * 0.00003 * window.innerHeight;
+  }
+}
+
+moveCamera();
 
 function animate() {
   requestAnimationFrame(animate);

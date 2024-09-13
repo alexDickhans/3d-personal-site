@@ -1,6 +1,7 @@
 :root {
     --spacing: 100vh;
     overflow-x: hidden;
+    margin: 0px;
 }
 
 .bar {
@@ -36,6 +37,7 @@
 canvas {
     position: fixed;
     top: 0;
+    margin: 0px;
     left: 0;
 }
 
@@ -100,11 +102,17 @@ header p {
 
 footer {
     grid-column: 1/12;
-    height: 8vh;
     width: 100vw;
     background: white;
     padding: 15px;
     margin-bottom: 0px;
+    margin: 0px;
+    display: flex;
+}
+
+footer .copy {
+    text-align: right;
+    padding: 20px;
 }
 
 body {
