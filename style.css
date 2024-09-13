@@ -61,6 +61,7 @@ main {
 header {
     grid-column: 2 / span 5;
     margin-bottom: var(--spacing);
+    min-height: 700px;
 }
 
 a {
@@ -122,4 +123,6 @@ body {
 }
 
 footer {
+    border: solid;
+    border-width: 3px;
 }

@@ -242,14 +242,11 @@ document.body.onresize = resize;
 function moveCamera() {
   const top = document.body.getBoundingClientRect().top;
 
-  camera.position.y = top * 0.00036 * window.innerHeight - 10;
-  camera.rotation.x = Math.max(
-    top * 0.0000018 * window.innerHeight,
-    -Math.PI / 4,
-  );
+  camera.position.y = top * 0.18 - 10;
+  camera.rotation.x = Math.max(top * 0.003, -Math.PI / 4);
 
   if (telemetry_radio != undefined) {
-    telemetry_radio.rotation.y = top * 0.00003 * window.innerHeight;
+    telemetry_radio.rotation.y = top * 0.01;
   }
 }
 
