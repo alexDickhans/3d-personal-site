@@ -76,6 +76,12 @@ function resize() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight, true);
 
+  if (window.innerWidth / window.innerHeight < 1.0) {
+    camera.position.setZ(80);
+  } else {
+    camera.position.setZ(30);
+  }
+
   console.log("resize");
 }
 
@@ -101,7 +107,6 @@ mtlLoader.load("high-stakes.mtl", function (materials) {
   });
 });
 
-camera.position.setZ(30);
 camera.position.y = -10;
 
 const material = new THREE.MeshStandardMaterial({
