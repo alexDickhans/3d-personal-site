@@ -285,7 +285,7 @@ function loadSvg() {
   );
 }
 
-loadSvg();
+// loadSvg();
 
 document.body.onscroll = moveCamera;
 
