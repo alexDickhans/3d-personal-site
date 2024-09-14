@@ -7,6 +7,7 @@ import { mx_bilerp_1 } from "three/src/nodes/materialx/lib/mx_noise.js";
 import { PI, RGBA_ASTC_5x4_Format, Vector3 } from "three/webgpu";
 import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader.js";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
+import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
 
 function move_bar(pct) {
   document.getElementsByClassName("bar-inside")[0].style.width = pct + "%";
@@ -239,6 +240,56 @@ mtlLoader.load("pico-debugger.mtl", function (materials) {
     scene.add(telemetry_radio);
   });
 });
+
+// Idea for the Liftoff board use 2d planes and animate the opacity to show the layers
+
+function loadSvg() {
+  const svgLoader = new SVGLoader();
+
+  // load a SVG resource
+  svgLoader.load(
+    // resource URL
+    "liftoff/liftoff-fcu.svg",
+    // called when the resource is loaded
+    function (data) {
+      const paths = data.paths;
+      const group = new THREE.Group();
+
+      for (let i = 0; i < paths.length; i++) {
+        const path = paths[i];
+
+        const material = new THREE.MeshBasicMaterial({
+          color: path.color,
+          side: THREE.DoubleSide,
+          depthWrite: false,
+        });
+
+        const shapes = SVGLoader.createShapes(path);
+
+        for (let j = 0; j < shapes.length; j++) {
+          const shape = shapes[j];
+          const geometry = new THREE.ShapeGeometry(shape);
+          const mesh = new THREE.Mesh(geometry, material);
+          group.add(mesh);
+        }
+      }
+      group.scale.setScalar(0.1);
+      group.position.set(-5, -100, 10);
+
+      scene.add(group);
+    },
+    // called when loading is in progresses
+    function (xhr) {
+      console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+    },
+    // called when loading has errors
+    function (error) {
+      console.log("An error happened");
+    },
+  );
+}
+
+loadSvg();
 
 document.body.onscroll = moveCamera;
 
