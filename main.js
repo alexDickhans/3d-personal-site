@@ -1,13 +1,9 @@
 import "./style.css";
 
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { STLLoader } from "three/examples/jsm/loaders/STLLoader";
-import { mx_bilerp_1 } from "three/src/nodes/materialx/lib/mx_noise.js";
-import { PI, RGBA_ASTC_5x4_Format, Vector3 } from "three/webgpu";
 import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader.js";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
-import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
+import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
 
 function move_bar(pct) {
   document.getElementsByClassName("bar-inside")[0].style.width = pct + "%";
