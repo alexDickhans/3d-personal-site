@@ -122,6 +122,12 @@ footer {
     position: relative;
 }
 
+@media screen and (min-width: 500px) {
+    footer {
+        padding: 50px;
+    }
+}
+
 footer span {
     position: absolute;
     bottom: 20px;
