@@ -97,6 +97,16 @@ header p {
     grid-column: 5 / span 7;
 }
 
+@media screen and (max-width: 700px) {
+    .right {
+        grid-column: 1 / span 12;
+    }
+
+    .left {
+        grid-column: 1 / span 12;
+    }
+}
+
 .note {
     font-style: italic;
 }
