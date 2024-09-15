@@ -145,7 +145,7 @@ scene.add(
   ambientLight,
 );
 
-renderer.setClearColor(0xffffff, 1);
+renderer.setClearColor(0xfdfdfd, 1);
 
 function addStar() {
   const geometry = new THREE.SphereGeometry(0.25, 24, 24);
@@ -188,7 +188,7 @@ const lineGeometry = new THREE.BufferGeometry().setFromPoints(points);
 
 const lineMaterial = new THREE.LineBasicMaterial({
   color: 0xff0000,
-  linewidth: 10,
+  linewidth: 1,
 });
 
 // Create the final object to add to the scene
