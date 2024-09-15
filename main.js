@@ -131,6 +131,7 @@ pointLight5.position.set(-20, OU_OFFSET + 20, 15);
 pointLight6.position.set(20, OU_OFFSET + 20, -20);
 pointLight7.position.set(20, OU_OFFSET + 20, 20);
 const light = new THREE.HemisphereLight(0xffffbb, 0x080820, 1);
+var ambientLight = new THREE.AmbientLight(0xffffff);
 scene.add(
   pointLight1,
   pointLight2,
@@ -141,6 +142,7 @@ scene.add(
   pointLight7,
   directionalLight,
   light,
+  ambientLight,
 );
 
 renderer.setClearColor(0xffffff, 1);
