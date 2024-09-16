@@ -4,6 +4,7 @@ import * as THREE from "three";
 import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader.js";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 function move_bar(pct) {
   document.getElementsByClassName("bar-inside")[0].style.width = pct + "%";
@@ -86,22 +87,30 @@ resize();
 
 var robotMesh;
 
-const mtlLoader = new MTLLoader();
+// Instantiate a loader
+const glbLoader = new GLTFLoader();
 
-mtlLoader.load("high-stakes.mtl", function (materials) {
-  // materials.preload();
-  var objLoader = new OBJLoader();
-  objLoader.setMaterials(materials);
-  objLoader.load("high-stakes.obj", function (object) {
-    robotMesh = object;
+// Load a glTF resource
+glbLoader.load(
+  // resource URL
+  "high-stakes.glb",
+  // called when the resource is loaded
+  function (gltf) {
+    gltf.animations; // Array<THREE.AnimationClip>
+    gltf.scene; // THREE.Group
+    gltf.scenes; // Array<THREE.Group>
+    gltf.cameras; // Array<THREE.Camera>
+    gltf.asset; // Object
+    robotMesh = gltf.scene;
     robotMesh.scale.setScalar(0.5);
     robotMesh.rotateX(-Math.PI / 2);
     robotMesh.position.set(18, -25, -10);
-    robotMesh.castShadow = true;
-    robotMesh.receiveShadow = true;
+
     scene.add(robotMesh);
-  });
-});
+  },
+);
+
+const mtlLoader = new MTLLoader();
 
 var mutcapSilicone = undefined;
 
@@ -144,7 +153,7 @@ mtlLoader.load("tactile/mutcap-pcb.mtl", function (materials) {
     mutcapPcb.rotateY(Math.PI * 1);
     mutcapPcb.rotateX(Math.PI / 2);
     mutcapPcb.scale.setScalar(2.5);
-    mutcapPcb.position.set(-28, -430, 5);
+    mutcapPcb.position.set(-28, -450, 5);
     scene.add(mutcapPcb);
   });
 });
@@ -159,7 +168,7 @@ mtlLoader.load("spool-holder.mtl", function (materials) {
     spoolHolder = object;
     spoolHolder.rotateY(Math.PI * 1);
     spoolHolder.scale.setScalar(0.6);
-    spoolHolder.position.set(-20, -580, 5);
+    spoolHolder.position.set(-20, -600, 5);
     scene.add(spoolHolder);
   });
 });
@@ -231,18 +240,25 @@ const curveObject = new THREE.Line(lineGeometry, lineMaterial);
 scene.add(curveObject);
 
 var over_under = undefined;
-mtlLoader.load("over-under.mtl", function (materials) {
-  // materials.preload();
-  var objLoader = new OBJLoader();
-  objLoader.setMaterials(materials);
-  objLoader.load("over-under.obj", function (object) {
-    over_under = object;
-    over_under.scale.setScalar(0.4);
-    over_under.position.set(0, OU_OFFSET, -10);
+// Load a glTF resource
+glbLoader.load(
+  // resource URL
+  "over-under.glb",
+  // called when the resource is loaded
+  function (gltf) {
+    gltf.animations; // Array<THREE.AnimationClip>
+    gltf.scene; // THREE.Group
+    gltf.scenes; // Array<THREE.Group>
+    gltf.cameras; // Array<THREE.Camera>
+    gltf.asset; // Object
+    over_under = gltf.scene;
+    over_under.scale.setScalar(0.5);
     over_under.rotateX(-Math.PI / 2);
+    over_under.position.set(18, -25, -10);
+
     scene.add(over_under);
-  });
-});
+  },
+);
 
 var planeGeometry = new THREE.PlaneGeometry(32, 18, 1, 1);
 var texture = new THREE.TextureLoader().load("al-planner.png");
@@ -267,7 +283,7 @@ function loadImage() {
 
   plane.scale.setScalar(1.5);
 
-  plane.position.set(30, -630, -20);
+  plane.position.set(30, -665, -20);
   plane.rotateY(-0.5);
 
   scene.add(plane);
@@ -373,7 +389,7 @@ function animate() {
 
   if (mutcap3d != undefined) {
     mutcap3d.rotation.z = Date.now() / 3000.0;
-    mutcap3d.position.y = -425 + Math.sin(Date.now() / 1000.0) * 5;
+    mutcap3d.position.y = -440 + Math.sin(Date.now() / 1000.0) * 5;
   }
 
   if (spoolHolder != undefined) {
