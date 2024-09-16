@@ -307,49 +307,80 @@ mtlLoader.load("pico-debugger.mtl", function (materials) {
 
 // Idea for the Liftoff board use 2d planes and animate the opacity to show the layers
 
+var pcb_bcu = undefined;
+var pcb_bss = undefined;
+var pcb_fcu = undefined;
+var pcb_fss = undefined;
+
 function loadSvg() {
-  const svgLoader = new SVGLoader();
+  var planeGeometry = new THREE.PlaneGeometry(30, 28.3516483515, 1, 1);
+  var texture1 = new THREE.TextureLoader().load("pcbs/liftoff-bss.png");
 
-  // load a SVG resource
-  svgLoader.load(
-    // resource URL
-    "liftoff/liftoff-fcu.svg",
-    // called when the resource is loaded
-    function (data) {
-      const paths = data.paths;
-      const group = new THREE.Group();
-
-      for (let i = 0; i < paths.length; i++) {
-        const path = paths[i];
-
-        const material = new THREE.MeshBasicMaterial({
-          color: path.color,
-          side: THREE.DoubleSide,
-          depthWrite: false,
-        });
-
-        const shapes = SVGLoader.createShapes(path);
-
-        for (let j = 0; j < shapes.length; j++) {
-          const shape = shapes[j];
-          const geometry = new THREE.ShapeGeometry(shape);
-          const mesh = new THREE.Mesh(geometry, material);
-          group.add(mesh);
-        }
-      }
-      group.scale.setScalar(0.1);
-      group.position.set(-5, -100, 10);
-
-      scene.add(group);
-    },
-    // called when loading has errors
-    function (error) {
-      console.log("An error happened");
-    },
+  pcb_bss = new THREE.Mesh(
+    planeGeometry,
+    new THREE.MeshBasicMaterial({
+      map: texture1,
+      color: 0xeeeeee,
+      transparent: true,
+    }),
   );
+
+  pcb_bss.scale.setScalar(1.0);
+
+  pcb_bss.position.set(-30, -665, -20);
+  pcb_bss.rotateZ(Math.PI / 2);
+  pcb_bss.rotateX(0.5);
+
+  var texture2 = new THREE.TextureLoader().load("pcbs/liftoff-bcu.png");
+  pcb_bcu = new THREE.Mesh(
+    planeGeometry,
+    new THREE.MeshBasicMaterial({
+      map: texture2,
+      color: 0xeeeeee,
+      transparent: true,
+    }),
+  );
+
+  pcb_bcu.scale.setScalar(1.0);
+
+  pcb_bcu.position.set(-30, -665, -19.5);
+  pcb_bcu.rotateZ(Math.PI / 2);
+  pcb_bcu.rotateX(0.5);
+
+  pcb_fcu = new THREE.Mesh(
+    planeGeometry,
+    new THREE.MeshBasicMaterial({
+      map: new THREE.TextureLoader().load("pcbs/liftoff-fcu.png"),
+      color: 0xeeeeee,
+      transparent: true,
+    }),
+  );
+
+  pcb_fcu.scale.setScalar(1.0);
+
+  pcb_fcu.position.set(-30, -665, -19);
+  pcb_fcu.rotateZ(Math.PI / 2);
+  pcb_fcu.rotateX(0.5);
+
+  pcb_fss = new THREE.Mesh(
+    planeGeometry,
+    new THREE.MeshBasicMaterial({
+      map: new THREE.TextureLoader().load("pcbs/liftoff-fss.png"),
+      color: 0xeeeeee,
+      transparent: true,
+    }),
+  );
+
+  pcb_fss.scale.setScalar(1.0);
+
+  pcb_fss.position.set(-30, -665, -18.5);
+  pcb_fss.rotateZ(Math.PI / 2);
+  pcb_fss.rotateX(0.5);
+
+  scene.add(pcb_bcu, pcb_bss, pcb_fcu, pcb_fss);
 }
 
-// loadSvg();
+loadSvg();
 
 document.body.onscroll = moveCamera;
 
@@ -394,6 +425,9 @@ function animate() {
 
   if (spoolHolder != undefined) {
     spoolHolder.rotation.y = Date.now() / 3000.0;
+  }
+
+  if (pcb_fss != undefined) {
   }
 
   renderer.render(scene, camera);
