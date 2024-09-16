@@ -173,37 +173,8 @@ const material = new THREE.MeshStandardMaterial({
   roughness: 0.5,
 });
 
-// const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-const pointLight1 = new THREE.PointLight(0xffffff, 500);
-const pointLight2 = new THREE.PointLight(0xffffff, 300);
-const pointLight3 = new THREE.PointLight(0xffffff, 300);
-const pointLight4 = new THREE.PointLight(0xffffff, 300);
-const pointLight5 = new THREE.PointLight(0xffffff, 500);
-const pointLight6 = new THREE.PointLight(0xffffff, 500);
-const pointLight7 = new THREE.PointLight(0xffffff, 500);
-const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
-
-pointLight1.position.set(10, -10, 10);
-pointLight2.position.set(-10, -15, 10);
-pointLight3.position.set(-25, 0, -15);
-pointLight4.position.set(-30, -35, -30);
-pointLight5.position.set(-20, OU_OFFSET + 20, 15);
-pointLight6.position.set(20, OU_OFFSET + 20, -20);
-pointLight7.position.set(20, OU_OFFSET + 20, 20);
-const light = new THREE.HemisphereLight(0xffffbb, 0x080820, 1);
-var ambientLight = new THREE.AmbientLight(0xffffff);
-scene.add(
-  pointLight1,
-  pointLight2,
-  pointLight3,
-  pointLight4,
-  pointLight5,
-  pointLight6,
-  pointLight7,
-  directionalLight,
-  light,
-  ambientLight,
-);
+const light = new THREE.HemisphereLight(0xffffff, 0x080820, 5);
+scene.add(light);
 
 renderer.setClearColor(0xfdfdfd, 1);
 
