@@ -83,7 +83,7 @@ header p {
 }
 
 .card {
-    min-height: 700px;
+    min-height: 500px;
     margin-bottom: var(--spacing);
 }
 
