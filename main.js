@@ -149,6 +149,21 @@ mtlLoader.load("tactile/mutcap-pcb.mtl", function (materials) {
   });
 });
 
+var spoolHolder = undefined;
+
+mtlLoader.load("spool-holder.mtl", function (materials) {
+  // materials.preload();
+  var objLoader = new OBJLoader();
+  objLoader.setMaterials(materials);
+  objLoader.load("spool-holder.obj", function (object) {
+    spoolHolder = object;
+    spoolHolder.rotateY(Math.PI * 1);
+    spoolHolder.scale.setScalar(0.6);
+    spoolHolder.position.set(-20, -580, 5);
+    scene.add(spoolHolder);
+  });
+});
+
 camera.position.y = -10;
 
 const material = new THREE.MeshStandardMaterial({
@@ -270,6 +285,25 @@ plane.rotateY(-0.5);
 
 scene.add(plane);
 
+function loadImage() {
+  var planeGeometry = new THREE.PlaneGeometry(30, 20.45, 1, 1);
+  var texture = new THREE.TextureLoader().load("command-based.png");
+  var planeMaterial = new THREE.MeshBasicMaterial({
+    map: texture,
+    color: 0xeeeeee,
+  });
+  var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+
+  plane.scale.setScalar(1.5);
+
+  plane.position.set(30, -630, -20);
+  plane.rotateY(-0.5);
+
+  scene.add(plane);
+}
+
+loadImage();
+
 var telemetry_radio = undefined;
 mtlLoader.load("pico-debugger.mtl", function (materials) {
   // materials.preload();
@@ -369,6 +403,10 @@ function animate() {
   if (mutcap3d != undefined) {
     mutcap3d.rotation.z = Date.now() / 3000.0;
     mutcap3d.position.y = -425 + Math.sin(Date.now() / 1000.0) * 5;
+  }
+
+  if (spoolHolder != undefined) {
+    spoolHolder.rotation.y = Date.now() / 3000.0;
   }
 
   renderer.render(scene, camera);
