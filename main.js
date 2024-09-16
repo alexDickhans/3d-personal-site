@@ -96,11 +96,56 @@ mtlLoader.load("high-stakes.mtl", function (materials) {
     robotMesh = object;
     robotMesh.scale.setScalar(0.5);
     robotMesh.rotateX(-Math.PI / 2);
-    robotMesh.position.set(15, -25, -10);
+    robotMesh.position.set(18, -25, -10);
     robotMesh.castShadow = true;
     robotMesh.receiveShadow = true;
     scene.add(robotMesh);
-    scene.add(over_under);
+  });
+});
+
+var mutcapSilicone = undefined;
+
+mtlLoader.load("tactile/mutcap-silicone.mtl", function (materials) {
+  // materials.preload();
+  var objLoader = new OBJLoader();
+  objLoader.setMaterials(materials);
+  objLoader.load("tactile/mutcap-silicone.obj", function (object) {
+    mutcapSilicone = object;
+    mutcapSilicone.scale.setScalar(2);
+    mutcapSilicone.rotateY(0.5);
+    mutcapSilicone.position.set(-22, -370, -10);
+    scene.add(mutcapSilicone);
+  });
+});
+
+var mutcap3d = undefined;
+
+mtlLoader.load("tactile/mutcap-3d.mtl", function (materials) {
+  // materials.preload();
+  var objLoader = new OBJLoader();
+  objLoader.setMaterials(materials);
+  objLoader.load("tactile/mutcap-3d.obj", function (object) {
+    mutcap3d = object;
+    mutcap3d.rotateX(Math.PI / 2);
+    mutcap3d.scale.setScalar(2);
+    mutcap3d.position.set(20, -410, -10);
+    scene.add(mutcap3d);
+  });
+});
+
+var mutcapPcb = undefined;
+
+mtlLoader.load("tactile/mutcap-pcb.mtl", function (materials) {
+  // materials.preload();
+  var objLoader = new OBJLoader();
+  objLoader.setMaterials(materials);
+  objLoader.load("tactile/mutcap-pcb.obj", function (object) {
+    mutcapPcb = object;
+    mutcapPcb.rotateY(Math.PI * 1);
+    mutcapPcb.rotateX(Math.PI / 2);
+    mutcapPcb.scale.setScalar(2.5);
+    mutcapPcb.position.set(-28, -430, 5);
+    scene.add(mutcapPcb);
   });
 });
 
@@ -319,6 +364,11 @@ function animate() {
   if (over_under != undefined) {
     over_under.position.set(position.x, position.y, position.z + 1);
     over_under.rotation.z = Math.atan2(tangent.x, tangent.z);
+  }
+
+  if (mutcap3d != undefined) {
+    mutcap3d.rotation.z = Date.now() / 3000.0;
+    mutcap3d.position.y = -425 + Math.sin(Date.now() / 1000.0) * 5;
   }
 
   renderer.render(scene, camera);
