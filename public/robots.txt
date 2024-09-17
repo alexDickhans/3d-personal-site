@@ -1,3 +1,8 @@
 User-agent: *
-Disallow: /*
+Disallow: /*.png
+Disallow: /*.stl
+Disallow: /*.blend
+Disallow: /*.blend1
+Disallow: /*.mtl
+Disallow: /*.glb
 Allow: /
