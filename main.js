@@ -392,29 +392,35 @@ function moveCamera() {
   camera.position.y = top * 0.17 - 10;
   camera.rotation.x = Math.max(top * 0.003, -Math.PI / 4);
 
+  const divisor = -600;
+
+  const start = 3000;
+
+  const diff = 30;
+
   if (telemetry_radio != undefined) {
     telemetry_radio.rotation.y = top * 0.01;
   }
 
-  const opacity1 = Math.max(Math.min((top + 3080) / -400, 1), 0);
+  const opacity1 = Math.min((top + start) / divisor, 1);
 
   if (pcb_bss != undefined) {
     pcb_bss.position.setX((1 - opacity1) * -200 - 30);
   }
 
-  const opacity2 = Math.max(Math.min((top + 3110) / -400, 1), 0);
+  const opacity2 = Math.min((top + start + diff) / divisor, 1);
 
   if (pcb_bcu != undefined) {
     pcb_bcu.position.setX((1 - opacity2) * -200 - 30);
   }
 
-  const opacity3 = Math.max(Math.min((top + 3140) / -400, 1), 0);
+  const opacity3 = Math.min((top + start + 2 * diff) / divisor, 1);
 
   if (pcb_fcu != undefined) {
     pcb_fcu.position.setX((1 - opacity3) * -200 - 30);
   }
 
-  const opacity4 = Math.max(Math.min((top + 3170) / -400, 1), 0);
+  const opacity4 = Math.min((top + start + 3 * diff) / divisor, 1);
 
   if (pcb_fss != undefined) {
     pcb_fss.position.setX((1 - opacity4) * -200 - 30);
