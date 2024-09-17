@@ -66,24 +66,6 @@ const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector("#bg"),
 });
 
-function resize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight, true);
-
-  if (window.innerWidth / window.innerHeight < 1.0) {
-    camera.position.setZ(80);
-  } else {
-    camera.position.setZ(30);
-  }
-
-  console.log("resize");
-}
-
-resize();
-
 var robotMesh;
 
 // Instantiate a loader
@@ -212,6 +194,28 @@ cylinder2.rotation.z = -Math.PI / 5;
 cylinder2.position.set(0.9, -15, 10);
 
 scene.add(cylinder1, cylinder2);
+
+function resize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight, true);
+
+  if (window.innerWidth / window.innerHeight < 1.0) {
+    camera.position.setZ(80);
+    cylinder1.position.setZ(60);
+    cylinder2.position.setZ(60);
+  } else {
+    camera.position.setZ(30);
+    cylinder1.position.setZ(10);
+    cylinder2.position.setZ(10);
+  }
+
+  console.log("resize");
+}
+
+resize();
 
 // Robot path following
 
