@@ -418,7 +418,7 @@ function moveCamera() {
 
   const divisor = -600;
 
-  const start = 3000;
+  const start = 2500;
 
   const diff = 30;
 
