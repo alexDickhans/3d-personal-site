@@ -2,6 +2,10 @@
     --spacing: 100vh;
     overflow-x: hidden;
     margin: 0px;
+    font-family: "Rubik", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 50;
+    font-style: normal;
 }
 
 .bar {
@@ -17,9 +21,10 @@
 
 .loading {
     opacity: 1;
-    background-color: #fff;
+    background-color: #efefef;
     position: fixed;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
@@ -27,6 +32,10 @@
     top: 0px;
     left: 0px;
     z-index: 1000;
+}
+
+.loading h2 {
+    padding-top: 20px;
 }
 
 .hidden {
@@ -46,10 +55,6 @@ main {
     width: 100vw;
     z-index: 99;
     width: 100%;
-    font-family: "Rubik", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 50;
-    font-style: normal;
 
     margin: 0px auto;
     padding: 120px 0px 0px 0px;
