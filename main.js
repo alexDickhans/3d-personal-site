@@ -4,6 +4,7 @@ import * as THREE from "three";
 import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader.js";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import * as GaussianSplats3D from "@mkkellogg/gaussian-splats-3d";
 
 function move_bar(pct) {
   document.getElementsByClassName("bar-inside")[0].style.width = pct + "%";
@@ -56,7 +57,7 @@ const OU_OFFSET = -240;
 const scene = new THREE.Scene();
 
 const camera = new THREE.PerspectiveCamera(
-  70,
+  30,
   window.innerWidth / window.innerHeight,
   0.1,
   1000,
@@ -85,7 +86,7 @@ glbLoader.load(
     robotMesh = gltf.scene;
     robotMesh.scale.setScalar(0.5);
     robotMesh.rotateX(-Math.PI / 2);
-    robotMesh.position.set(18, -25, -10);
+    robotMesh.position.set(18, -800, -10);
 
     scene.add(robotMesh);
   },
@@ -203,11 +204,11 @@ function resize() {
   renderer.setSize(window.innerWidth, window.innerHeight, true);
 
   if (window.innerWidth / window.innerHeight < 1.0) {
-    camera.position.setZ(80);
+    camera.position.setZ(130);
     cylinder1.position.setZ(60);
     cylinder2.position.setZ(60);
   } else {
-    camera.position.setZ(30);
+    camera.position.setZ(80);
     cylinder1.position.setZ(10);
     cylinder2.position.setZ(10);
   }
@@ -307,6 +308,26 @@ mtlLoader.load("pico-debugger.mtl", function (materials) {
     scene.add(telemetry_radio);
   });
 });
+
+const viewer = new GaussianSplats3D.DropInViewer({
+  gpuAcceleratedSort: false,
+});
+viewer.addSplatScenes([
+  {
+    path: "/gaussian_splats/alex.ksplat",
+    splatAlphaRemovalThreshold: 5,
+  },
+  {
+    path: "/gaussian_splats/alex.ksplat",
+    rotation: [1, 0, 0, 0],
+    scale: [80, 80, 80],
+    position: [0, 0, 0],
+  },
+]);
+
+viewer.position.set(20, -5, -10);
+
+scene.add(viewer);
 
 // Idea for the Liftoff board use 2d planes and animate the opacity to show the layers
 
@@ -439,6 +460,8 @@ function animate() {
   if (robotMesh != undefined) {
     robotMesh.rotation.z += 0.01;
   }
+
+  viewer.rotation.y = Math.cos(Date.now() / 3200) / 1.8;
 
   cylinder1.position.y = Math.cos(Date.now() / 400) * 0.75 - 21;
   cylinder2.position.y = Math.cos(Date.now() / 400) * 0.75 - 21;

@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@mkkellogg/gaussian-splats-3d':
+        specifier: ^0.4.5
+        version: 0.4.5(three@0.168.0)
       three:
         specifier: ^0.168.0
         version: 0.168.0
@@ -155,6 +158,11 @@ packages:
     engines: {node: '>=12'}
     cpu: [x64]
     os: [win32]
+
+  '@mkkellogg/gaussian-splats-3d@0.4.5':
+    resolution: {integrity: sha512-cMh7yuzQQioYkJRHJkLF0v7bHamyhlI9WuFcUp4eOaVoVCUclmVQI8fUEwoAi2Q2IYCal7vkYxjBEAByGC7Dlg==}
+    peerDependencies:
+      three: '>=0.160.0'
 
   '@rollup/rollup-android-arm-eabi@4.21.2':
     resolution: {integrity: sha512-fSuPrt0ZO8uXeS+xP3b+yYTCBUd05MoSp2N/MFOgjhhUhMmchXlpTQrTpI8T+YAwAQuK7MafsCOxW7VrPMrJcg==}
@@ -374,6 +382,10 @@ snapshots:
 
   '@esbuild/win32-x64@0.21.5':
     optional: true
+
+  '@mkkellogg/gaussian-splats-3d@0.4.5(three@0.168.0)':
+    dependencies:
+      three: 0.168.0
 
   '@rollup/rollup-android-arm-eabi@4.21.2':
     optional: true
