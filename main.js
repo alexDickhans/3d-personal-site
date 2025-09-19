@@ -6,8 +6,61 @@ import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import * as GaussianSplats3D from "@mkkellogg/gaussian-splats-3d";
 
+// Create twinkling stars for loading screen
+function createLoadingStars() {
+  const loadingContainer = document.querySelector(".loading");
+  if (!loadingContainer) return;
+
+  // Create 50 stars for the loading screen
+  for (let i = 0; i < 100; i++) {
+    const star = document.createElement("div");
+    star.className = "loading-star";
+    
+    // Random position
+    const x = Math.random() * 100;
+    const y = Math.random() * 100;
+    star.style.left = x + "%";
+    star.style.top = y + "%";
+    
+    // Random size (1-4px)
+    const size = Math.random() * 3 + 1;
+    star.style.width = size + "px";
+    star.style.height = size + "px";
+    
+    // Random animation delay
+    const delay = Math.random() * 2;
+    star.style.animationDelay = delay + "s";
+    
+    // Random animation duration
+    const duration = Math.random() * 2 + 1;
+    star.style.animationDuration = duration + "s";
+    
+    loadingContainer.appendChild(star);
+  }
+}
+
 function move_bar(pct) {
-  document.getElementsByClassName("bar-inside")[0].style.width = pct + "%";
+  const progressFill = document.querySelector(".progress-fill");
+  const loadingText = document.querySelector(".loading-text");
+  
+  if (progressFill) {
+    progressFill.style.width = pct + "%";
+  }
+  
+  // Update loading text based on progress
+  if (loadingText) {
+    if (pct < 25) {
+      loadingText.textContent = "Loading 3D models...";
+    } else if (pct < 50) {
+      loadingText.textContent = "Initializing textures...";
+    } else if (pct < 75) {
+      loadingText.textContent = "Preparing animations...";
+    } else if (pct < 100) {
+      loadingText.textContent = "Almost ready...";
+    } else {
+      loadingText.textContent = "Welcome to my portfolio!";
+    }
+  }
 }
 
 THREE.DefaultLoadingManager.onStart = function (url, itemsLoaded, itemsTotal) {
@@ -26,8 +79,24 @@ THREE.DefaultLoadingManager.onStart = function (url, itemsLoaded, itemsTotal) {
 
 THREE.DefaultLoadingManager.onLoad = function () {
   console.log("Loading Complete!");
-  document.querySelector(".loading").className = "hidden";
-  document.getElementById("content").style.visibility = "visible";
+  
+  // Update final loading text
+  const loadingText = document.querySelector(".loading-text");
+  if (loadingText) {
+    loadingText.textContent = "Welcome to my portfolio!";
+  }
+  
+  // Add a small delay before hiding loading screen
+  setTimeout(() => {
+    const loadingScreen = document.querySelector(".loading");
+    if (loadingScreen) {
+      loadingScreen.style.opacity = "0";
+      setTimeout(() => {
+        loadingScreen.className = "hidden";
+        document.getElementById("content").style.visibility = "visible";
+      }, 500); // Wait for fade transition
+    }
+  }, 300);
 };
 
 THREE.DefaultLoadingManager.onProgress = function (
@@ -492,3 +561,6 @@ function animate() {
 }
 
 animate();
+
+// Create twinkling stars for loading screen
+createLoadingStars();
